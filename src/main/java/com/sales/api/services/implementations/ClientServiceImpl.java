@@ -35,13 +35,13 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientModel createClient(ClientRequest client) {
-        Client clientEntity = new Client();
-
         Client clientWithName = clientRepository.findByName(client.getName());
 
         if(clientWithName != null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This name already exists");
         }
+
+        Client clientEntity = new Client();
 
         clientEntity.setName(client.getName());
         return mapEntityIntoModel(clientRepository.save(clientEntity));
