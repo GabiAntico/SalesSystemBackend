@@ -8,6 +8,9 @@ import java.util.List;
 
 @Service
 public interface SalesService {
+
+    List<String> getProducts();
+
     List<SaleDto> getAllSales();
 
     SaleDto postSale(SaleRequest sale);

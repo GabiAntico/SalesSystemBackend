@@ -28,35 +28,17 @@ public class SalesController {
 
     @GetMapping("/products")
     public ResponseEntity<List<String>> getAllProducts(){
-        List<String> products = new ArrayList<>();
-        products.add("AMD RYZEN 5 4600G");
-        products.add("AMD RYZEN 7 4700");
-        products.add("AMD RYZEN 5 5600G");
-        products.add("AMD RYZEN 5 5600X");
-        products.add("AMD RYZEN 5 5600XT");
-        products.add("AMD RYZEN 7 5800X3D");
-        products.add("AMD RYZEN 9 5950X");
+//        List<String> products = new ArrayList<>();
+//        products.add("AMD RYZEN 5 4600G");
+//        products.add("AMD RYZEN 7 4700");
+//        products.add("AMD RYZEN 5 5600G");
+//        products.add("AMD RYZEN 5 5600X");
+//        products.add("AMD RYZEN 5 5600XT");
+//        products.add("AMD RYZEN 7 5800X3D");
+//        products.add("AMD RYZEN 9 5950X");
 
-        return ResponseEntity.ok(products);
+        return ResponseEntity.ok(salesService.getProducts());
     }
-
-//    @GetMapping("/clients")
-//    public ResponseEntity<List<String>> getAllClients(){
-//        List<String> clients = new ArrayList<>();
-//        clients.add("Gabriel Antico");
-//        clients.add("Lionel Messi");
-//        clients.add("Joy Boy");
-//
-//        return ResponseEntity.ok(clients);
-//    }
-
-//    @GetMapping("/sellers")
-//    public ResponseEntity<List<String>> getAllSellers(){
-//        List<String> sellers = new ArrayList<>();
-//        sellers.add("Emilia");
-//        sellers.add("Tiziana");
-//        return ResponseEntity.ok(sellers);
-//    }
 
     @PostMapping("/sales")
     public ResponseEntity<SaleDto> postSale(@RequestBody SaleRequest sale){
