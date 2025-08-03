@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -20,4 +21,6 @@ public class SaleModel {
     private SellerModel seller;
 
     private List<SaleDetailModel> details;
+
+    private BigDecimal total;
 }

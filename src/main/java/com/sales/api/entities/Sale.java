@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -28,4 +29,7 @@ public class Sale {
 
     @OneToMany(mappedBy = "sale")
     private List<SaleDetail> details;
+
+    @Column
+    private BigDecimal total;
 }

@@ -79,6 +79,7 @@ public class SalesServiceImpl implements SalesService {
             saleModel.setId(sale.getId());
             saleModel.setClient(new ClientModel(sale.getClient().getId(), sale.getClient().getName()));
             saleModel.setSeller(new SellerModel(sale.getSeller().getId(), sale.getSeller().getName()));
+            saleModel.setTotal(sale.getTotal());
 
             List<SaleDetailModel> saleDetailModelLst = new ArrayList<>();
             for(SaleDetail saleDetail : sale.getDetails()){
@@ -89,7 +90,7 @@ public class SalesServiceImpl implements SalesService {
                         saleDetail.getCuantity(),
                         saleDetail.getPrice(),
                         saleDetail.getSubtotal(),
-                        new SaleModel(saleDetail.getSale().getId(), null, null, null)
+                        new SaleModel(saleDetail.getSale().getId(), null, null, null, null)
                 );
 
                 saleDetailModelLst.add(saleDetailModel);
@@ -108,9 +109,9 @@ public class SalesServiceImpl implements SalesService {
         for(SaleModel saleModel : saleModelList){
             SaleDto saleDto = new SaleDto();
 
-            saleDto.setProduct(saleModel.getProduct());
             saleDto.setClient(saleModel.getClient().getName());
             saleDto.setSeller(saleModel.getSeller().getName());
+            saleDto.setTotal(saleModel.getTotal());
 
             saleDtoList.add(saleDto);
         }
