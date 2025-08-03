@@ -1,9 +1,12 @@
 package com.sales.api.models;
 
 import com.sales.api.entities.Client;
+import com.sales.api.entities.SaleDetail;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -12,9 +15,9 @@ public class SaleModel {
 
     private Long id;
 
-    private String product;
-
     private ClientModel client;
 
     private SellerModel seller;
+
+    private List<SaleDetailModel> details;
 }

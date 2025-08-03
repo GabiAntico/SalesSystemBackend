@@ -2,13 +2,8 @@ package com.sales.api.services.implementations;
 
 import com.sales.api.dtos.SaleDto;
 import com.sales.api.dtos.SaleRequest;
-import com.sales.api.entities.Client;
-import com.sales.api.entities.Product;
-import com.sales.api.entities.Sale;
-import com.sales.api.entities.Seller;
-import com.sales.api.models.ClientModel;
-import com.sales.api.models.SaleModel;
-import com.sales.api.models.SellerModel;
+import com.sales.api.entities.*;
+import com.sales.api.models.*;
 import com.sales.api.repositories.SalesRepository;
 import com.sales.api.services.SalesService;
 import lombok.Data;
@@ -80,15 +75,29 @@ public class SalesServiceImpl implements SalesService {
 
         for(Sale sale : salesEntities){
             SaleModel saleModel = new SaleModel();
+
             saleModel.setId(sale.getId());
-            saleModel.setProduct(sale.getProduct());
-
-
             saleModel.setClient(new ClientModel(sale.getClient().getId(), sale.getClient().getName()));
             saleModel.setSeller(new SellerModel(sale.getSeller().getId(), sale.getSeller().getName()));
 
+            List<SaleDetailModel> saleDetailModelLst = new ArrayList<>();
+            for(SaleDetail saleDetail : sale.getDetails()){
+                SaleDetailModel saleDetailModel = new SaleDetailModel(
+                        saleDetail.getId(),
+                        new ProductModel(saleDetail.getProduct().getId(), saleDetail.getProduct().getDescription(),
+                                saleDetail.getProduct().getUnitaryPrice()),
+                        saleDetail.getCuantity(),
+                        saleDetail.getPrice(),
+                        saleDetail.getSubtotal(),
+                        new SaleModel(saleDetail.getSale().getId(), null, null, null)
+                );
+
+                saleDetailModelLst.add(saleDetailModel);
+            }
+            saleModel.setDetails(saleDetailModelLst);
             saleModelList.add(saleModel);
         }
+
         return saleModelList;
     }
 
