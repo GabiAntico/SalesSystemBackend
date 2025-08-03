@@ -50,7 +50,7 @@ public class SalesServiceImpl implements SalesService {
     @Override
     public SaleDto postSale(SaleRequest sale) {
 
-        Sale saleToSave = new Sale(null, new Client(sale.getClientId(), null), new Seller(sale.getSellerId(), null), null);
+        Sale saleToSave = new Sale(null, new Client(sale.getClientId(), null), new Seller(sale.getSellerId(), null), null, null);
 
         salesRepository.save(saleToSave);
 
