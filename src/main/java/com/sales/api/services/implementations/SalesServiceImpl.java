@@ -3,6 +3,7 @@ package com.sales.api.services.implementations;
 import com.sales.api.dtos.SaleDto;
 import com.sales.api.dtos.SaleRequest;
 import com.sales.api.entities.Client;
+import com.sales.api.entities.Product;
 import com.sales.api.entities.Sale;
 import com.sales.api.entities.Seller;
 import com.sales.api.models.ClientModel;
@@ -54,7 +55,7 @@ public class SalesServiceImpl implements SalesService {
     @Override
     public SaleDto postSale(SaleRequest sale) {
 
-        Sale saleToSave = new Sale(null, sale.getProduct(), new Client(sale.getClientId(), null), new Seller(sale.getSellerId(), null));
+        Sale saleToSave = new Sale(null, new Client(sale.getClientId(), null), new Seller(sale.getSellerId(), null), null);
 
         salesRepository.save(saleToSave);
 
