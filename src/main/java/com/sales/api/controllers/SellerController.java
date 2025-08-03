@@ -27,4 +27,4 @@ public class SellerController {
     public ResponseEntity<SellerModel> createNewSeller(@RequestBody SellerRequest sellerRequest){
         return ResponseEntity.ok(sellerService.createSeller(sellerRequest));
     }
-}g
+}
