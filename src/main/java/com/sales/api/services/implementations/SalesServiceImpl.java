@@ -120,22 +120,43 @@ public class SalesServiceImpl implements SalesService {
 
     /** Single ojects mapping */
 
-    private SaleModel mapDtoIntoModel(SaleDto saleDto){
-        SaleModel saleModel = new SaleModel();
 
-        saleModel.setProduct(saleDto.getProduct());
-        saleModel.setClient(new ClientModel(null, saleDto.getClient()));
-        saleModel.setSeller(new SellerModel(null, saleDto.getSeller()));
+    /* This method is obsolete because it never needs map SaleDto to SaleModel */
 
-        return saleModel;
-    }
+//    private SaleModel mapDtoIntoModel(SaleDto saleDto){
+//        SaleModel saleModel = new SaleModel();
+//
+//        saleModel.setProduct(saleDto.getProduct());
+//        saleModel.setClient(new ClientModel(null, saleDto.getClient()));
+//        saleModel.setSeller(new SellerModel(null, saleDto.getSeller()));
+//
+//        return saleModel;
+//    }
+
 
     private Sale mapModelIntoEntity(SaleModel saleModel){
         Sale sale = new Sale();
 
-        sale.setProduct(saleModel.getProduct());
+        sale.setId(saleModel.getId());
         sale.setClient(new Client(saleModel.getClient().getId(), saleModel.getClient().getName()));
         sale.setSeller(new Seller(saleModel.getSeller().getId(), saleModel.getSeller().getName()));
+        sale.setTotal(saleModel.getTotal());
+
+        List<SaleDetail> saleDetailLst = new ArrayList<>();
+        for(SaleDetailModel saleDetailModel : saleModel.getDetails()){
+            SaleDetail saleDetail = new SaleDetail();
+
+            saleDetail.setId(saleDetailModel.getId());
+            saleDetail.setCuantity(saleDetailModel.getCuantity());
+            saleDetail.setPrice(saleDetailModel.getPrice());
+            saleDetail.setSubtotal(saleDetailModel.getSubtotal());
+            saleDetail.setProduct(new Product(saleDetailModel.getProduct().getId(), saleDetailModel.getProduct().getDescription(),
+                    saleDetailModel.getProduct().getUnitaryPrice()));
+            saleDetail.setSale(new Sale(saleDetailModel.getSale().getId(), null, null, null, null));
+
+            saleDetailLst.add(saleDetail);
+        }
+        sale.setDetails(saleDetailLst);
 
         return sale;
     }
@@ -144,9 +165,26 @@ public class SalesServiceImpl implements SalesService {
         SaleModel saleModel = new SaleModel();
 
         saleModel.setId(saleModel.getId());
-        saleModel.setProduct(sale.getProduct());
         saleModel.setClient(new ClientModel(sale.getClient().getId(), sale.getClient().getName()));
         saleModel.setSeller(new SellerModel(sale.getSeller().getId(), sale.getSeller().getName()));
+        saleModel.setTotal(sale.getTotal());
+
+        List<SaleDetailModel> saleDetailModelLst = new ArrayList<>();
+
+        for(SaleDetail saleDetail : sale.getDetails()){
+            SaleDetailModel saleDetailModel = new SaleDetailModel();
+
+            saleDetailModel.setId(saleDetail.getId());
+            saleDetailModel.setCuantity(saleDetailModel.getCuantity());
+            saleDetailModel.setPrice(saleDetail.getPrice());
+            saleDetailModel.setSubtotal(saleDetail.getSubtotal());
+            saleDetailModel.setProduct(new ProductModel(saleDetail.getProduct().getId(), saleDetail.getProduct().getDescription(),
+                                                        saleDetail.getProduct().getUnitaryPrice()));
+            saleDetailModel.setSale(new SaleModel(saleDetail.getSale().getId(), null, null, null, null));
+
+            saleDetailModelLst.add(saleDetailModel);
+        }
+        saleModel.setDetails(saleDetailModelLst);
 
         return saleModel;
     }
@@ -154,9 +192,9 @@ public class SalesServiceImpl implements SalesService {
     private SaleDto mapModelIntoDto(SaleModel saleModel){
         SaleDto saleDto = new SaleDto();
 
-        saleDto.setProduct(saleModel.getProduct());
         saleDto.setClient(saleModel.getClient().getName());
         saleDto.setSeller(saleModel.getSeller().getName());
+        saleDto.setTotal(saleModel.getTotal());
 
         return saleDto;
     }
