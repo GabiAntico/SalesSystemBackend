@@ -1,6 +1,7 @@
 package com.sales.api.services;
 
 import com.sales.api.dtos.SellerRequest;
+import com.sales.api.entities.Seller;
 import com.sales.api.models.SellerModel;
 import org.springframework.stereotype.Service;
 
@@ -11,4 +12,6 @@ public interface SellerService {
     List<SellerModel> getAllSellers();
 
     SellerModel createSeller(SellerRequest sellerRequest);
+
+    Seller getSellerById(Long sellerId);
 }

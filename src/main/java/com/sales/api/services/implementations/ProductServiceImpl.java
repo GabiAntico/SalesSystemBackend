@@ -5,7 +5,10 @@ import com.sales.api.models.ProductModel;
 import com.sales.api.repositories.ProductRepository;
 import com.sales.api.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +29,14 @@ public class ProductServiceImpl implements ProductService {
         }
 
         return productModels;
+    }
+
+    @Override
+    public Product getProductById(Long productId) {
+        Product product = productRepository.findById(productId).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "The inserted product does not exists."));
+
+        return product;
     }
 
     private ProductModel mapEntityIntoModel(Product product){

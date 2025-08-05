@@ -45,6 +45,14 @@ public class SellerServiceImpl implements SellerService {
         return mapEntityIntoModel(sellerRepository.save(sellerEntity));
     }
 
+    @Override
+    public Seller getSellerById(Long sellerId) {
+        Seller seller = sellerRepository.findById(sellerId).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Seller not found"));
+
+        return seller;
+    }
+
     private SellerModel mapEntityIntoModel(Seller seller){
         return new SellerModel(seller.getId(), seller.getName());
     }

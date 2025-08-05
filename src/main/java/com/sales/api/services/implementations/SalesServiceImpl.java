@@ -1,15 +1,22 @@
 package com.sales.api.services.implementations;
 
+import com.sales.api.dtos.SaleDetailRequest;
 import com.sales.api.dtos.SaleDto;
 import com.sales.api.dtos.SaleRequest;
 import com.sales.api.entities.*;
 import com.sales.api.models.*;
 import com.sales.api.repositories.SalesRepository;
+import com.sales.api.services.ClientService;
+import com.sales.api.services.ProductService;
 import com.sales.api.services.SalesService;
+import com.sales.api.services.SellerService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +25,19 @@ public class SalesServiceImpl implements SalesService {
 
     @Autowired
     private SalesRepository salesRepository;
+
+    /**
+     * Auxiliary services
+     */
+
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private ClientService clientService;
+
+    @Autowired
+    private SellerService sellerService;
 
     @Override
     public List<SaleDto> getAllSales() {
@@ -29,11 +49,44 @@ public class SalesServiceImpl implements SalesService {
     @Override
     public SaleDto postSale(SaleRequest sale) {
 
-        Sale saleToSave = new Sale(null, new Client(sale.getClientId(), null), new Seller(sale.getSellerId(), null), null, null);
+        List<SaleDetail> details = new ArrayList<>();
 
-        salesRepository.save(saleToSave);
+        BigDecimal total = new BigDecimal(0);
 
-        return mapModelIntoDto(mapEntityIntoModel(saleToSave));
+        Client client = clientService.getClientById(sale.getClientId());
+
+        Seller seller = sellerService.getSellerById(sale.getSellerId());
+
+        Sale saleToSave = new Sale(null, client, seller, null, null);
+
+        for(SaleDetailRequest saleDetailRequest : sale.getDetails()){
+
+
+            Product product = productService.getProductById(saleDetailRequest.getProductId());
+
+            SaleDetail saleDetail = new SaleDetail();
+            saleDetail.setProduct(product);
+            saleDetail.setCuantity(saleDetailRequest.getCuantity());
+            saleDetail.setPrice(product.getUnitaryPrice());
+
+            BigDecimal subtotal = product.getUnitaryPrice();
+            subtotal = subtotal.multiply(new BigDecimal(saleDetail.getCuantity()));
+
+            saleDetail.setSubtotal(subtotal);
+
+            total = total.add(subtotal);
+
+            saleDetail.setSale(saleToSave);
+
+            details.add(saleDetail);
+        }
+
+        saleToSave.setDetails(details);
+        saleToSave.setTotal(total);
+
+        Sale saleSaved = salesRepository.save(saleToSave);
+
+        return mapModelIntoDto(mapEntityIntoModel(saleSaved));
     }
 
     @Override
@@ -41,6 +94,14 @@ public class SalesServiceImpl implements SalesService {
         List<Sale> sales = salesRepository.findAllByClientIgnoreCase(name);
 
         return mapListModelIntoDto(mapListEntityIntoModel(sales));
+    }
+
+    @Override
+    public SaleModel getSaleById(Long saleId) {
+        Sale sale = salesRepository.findById(saleId).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Sale not found"));
+
+        return mapEntityIntoModel(sale);
     }
 
 
@@ -143,7 +204,7 @@ public class SalesServiceImpl implements SalesService {
     private SaleModel mapEntityIntoModel(Sale sale){
         SaleModel saleModel = new SaleModel();
 
-        saleModel.setId(saleModel.getId());
+        saleModel.setId(sale.getId());
         saleModel.setClient(new ClientModel(sale.getClient().getId(), sale.getClient().getName()));
         saleModel.setSeller(new SellerModel(sale.getSeller().getId(), sale.getSeller().getName()));
         saleModel.setTotal(sale.getTotal());

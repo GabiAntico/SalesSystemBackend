@@ -9,4 +9,6 @@ import java.util.List;
 @Service
 public interface ProductService {
     List<ProductModel> getAllProducts();
+
+    Product getProductById(Long productId);
 }

@@ -47,6 +47,14 @@ public class ClientServiceImpl implements ClientService {
         return mapEntityIntoModel(clientRepository.save(clientEntity));
     }
 
+    @Override
+    public Client getClientById(Long clientId) {
+        Client client = clientRepository.findById(clientId).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Client not found"));
+
+        return client;
+    }
+
     private ClientModel mapEntityIntoModel(Client client){
         ClientModel clientModel = new ClientModel(client.getId(), client.getName());
         return clientModel;

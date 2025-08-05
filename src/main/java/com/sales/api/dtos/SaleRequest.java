@@ -11,7 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SaleRequest {
-    private Long productId;
     private Long clientId;
     private Long sellerId;
     private List<SaleDetailRequest> details;
