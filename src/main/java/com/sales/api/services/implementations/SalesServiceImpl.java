@@ -16,27 +16,6 @@ import java.util.List;
 @Service
 public class SalesServiceImpl implements SalesService {
 
-    List<String> products = new ArrayList<>();
-
-    public SalesServiceImpl() {
-        products.add("AMD RYZEN 5 4600G");
-        products.add("AMD RYZEN 7 4700");
-        products.add("AMD RYZEN 5 5600G");
-        products.add("AMD RYZEN 5 5600X");
-        products.add("AMD RYZEN 5 5600XT");
-        products.add("AMD RYZEN 7 5800X3D");
-        products.add("AMD RYZEN 9 5950X");
-    }
-
-    @Override
-    public List<String> getProducts(){
-        return this.products;
-    }
-
-//    public void addProduct(String product){
-//        products.add(product);
-//    }
-
     @Autowired
     private SalesRepository salesRepository;
 
