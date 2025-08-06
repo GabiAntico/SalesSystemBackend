@@ -32,11 +32,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getProductById(Long productId) {
+    public Product getProductByIdToSales(Long productId) {
         Product product = productRepository.findById(productId).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "The inserted product does not exists."));
 
         return product;
+    }
+
+    @Override
+    public ProductModel getProductById(Long productId) {
+        Product product = productRepository.findById(productId).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "The product was not found."));
+
+        return mapEntityIntoModel(product);
     }
 
     private ProductModel mapEntityIntoModel(Product product){

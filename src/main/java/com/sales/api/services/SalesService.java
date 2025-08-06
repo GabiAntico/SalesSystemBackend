@@ -2,6 +2,7 @@ package com.sales.api.services;
 
 import com.sales.api.dtos.SaleDto;
 import com.sales.api.dtos.SaleRequest;
+import com.sales.api.dtos.toShowLikeDetail.SaleCompleteDto;
 import com.sales.api.models.SaleModel;
 import org.springframework.stereotype.Service;
 
@@ -17,4 +18,6 @@ public interface SalesService {
     List<SaleDto> getSalesByClient(String name);
 
     SaleModel getSaleById(Long saleId);
+
+    SaleCompleteDto getSaleCompleteById(Long id);
 }

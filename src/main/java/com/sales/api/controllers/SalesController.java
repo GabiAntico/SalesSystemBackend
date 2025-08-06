@@ -2,6 +2,7 @@ package com.sales.api.controllers;
 
 import com.sales.api.dtos.SaleDto;
 import com.sales.api.dtos.SaleRequest;
+import com.sales.api.dtos.toShowLikeDetail.SaleCompleteDto;
 import com.sales.api.services.SalesService;
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +58,10 @@ public class SalesController {
         List<SaleDto> sales = salesService.getSalesByClient(name);
 
         return ResponseEntity.ok(sales);
+    }
+
+    @GetMapping("/sales/{id}")
+    public ResponseEntity<SaleCompleteDto> getSaleCompleteById(@PathVariable Long id){
+        return ResponseEntity.ok(salesService.getSaleCompleteById(id));
     }
 }

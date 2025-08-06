@@ -10,5 +10,7 @@ import java.util.List;
 public interface ProductService {
     List<ProductModel> getAllProducts();
 
-    Product getProductById(Long productId);
+    Product getProductByIdToSales(Long productId);
+
+    ProductModel getProductById(Long productId);
 }

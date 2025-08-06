@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -60,7 +61,7 @@ class ClientServiceImplTest {
         Client clientToSave = new Client(null, "Gabi");
         Client clientSaved = new Client(1L, "Gabi");
         when(clientRepository.findByName("Gabi")).thenReturn(null);
-        when(clientRepository.save(clientToSave)).thenReturn(clientSaved);
+        when(clientRepository.save(any(Client.class))).thenReturn(clientSaved);
 
         ClientModel client = clientService.createClient(new ClientRequest("Gabi"));
 

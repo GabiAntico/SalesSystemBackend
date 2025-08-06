@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -60,7 +61,7 @@ class SellerServiceImplTest {
         Seller sellerSaved = new Seller(1L, "seller1");
 
         when(sellerRepository.findByName("seller1")).thenReturn(null);
-        when(sellerRepository.save(sellerToSave)).thenReturn(sellerSaved);
+        when(sellerRepository.save(any(Seller.class))).thenReturn(sellerSaved);
 
         SellerModel seller = sellerService.createSeller(new SellerRequest("seller1"));
 

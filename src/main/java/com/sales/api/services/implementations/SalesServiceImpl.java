@@ -3,6 +3,8 @@ package com.sales.api.services.implementations;
 import com.sales.api.dtos.SaleDetailRequest;
 import com.sales.api.dtos.SaleDto;
 import com.sales.api.dtos.SaleRequest;
+import com.sales.api.dtos.toShowLikeDetail.SaleCompleteDto;
+import com.sales.api.dtos.toShowLikeDetail.SaleDetailDto;
 import com.sales.api.entities.*;
 import com.sales.api.models.*;
 import com.sales.api.repositories.SalesRepository;
@@ -62,7 +64,7 @@ public class SalesServiceImpl implements SalesService {
         for(SaleDetailRequest saleDetailRequest : sale.getDetails()){
 
 
-            Product product = productService.getProductById(saleDetailRequest.getProductId());
+            Product product = productService.getProductByIdToSales(saleDetailRequest.getProductId());
 
             SaleDetail saleDetail = new SaleDetail();
             saleDetail.setProduct(product);
@@ -102,6 +104,18 @@ public class SalesServiceImpl implements SalesService {
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Sale not found"));
 
         return mapEntityIntoModel(sale);
+    }
+
+    @Override
+    public SaleCompleteDto getSaleCompleteById(Long id) {
+        Sale sale = salesRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Sale not found."));
+
+        SaleModel saleModel = mapEntityIntoModel(sale);
+
+        SaleCompleteDto saleCompleteDto = mapSaleModelIntoSaleCompleteDto(saleModel);
+
+        return saleCompleteDto;
     }
 
 
@@ -149,6 +163,7 @@ public class SalesServiceImpl implements SalesService {
         for(SaleModel saleModel : saleModelList){
             SaleDto saleDto = new SaleDto();
 
+            saleDto.setId(saleModel.getId());
             saleDto.setClient(saleModel.getClient().getName());
             saleDto.setSeller(saleModel.getSeller().getName());
             saleDto.setTotal(saleModel.getTotal());
@@ -232,10 +247,37 @@ public class SalesServiceImpl implements SalesService {
     private SaleDto mapModelIntoDto(SaleModel saleModel){
         SaleDto saleDto = new SaleDto();
 
+        saleDto.setId(saleModel.getId());
         saleDto.setClient(saleModel.getClient().getName());
         saleDto.setSeller(saleModel.getSeller().getName());
         saleDto.setTotal(saleModel.getTotal());
 
         return saleDto;
+    }
+
+    private SaleCompleteDto mapSaleModelIntoSaleCompleteDto(SaleModel saleModel){
+        SaleCompleteDto saleCompleteDto = new SaleCompleteDto();
+
+        saleCompleteDto.setId(saleModel.getId());
+        saleCompleteDto.setClient(saleModel.getClient());
+        saleCompleteDto.setSeller(saleModel.getSeller());
+        saleCompleteDto.setTotal(saleModel.getTotal());
+
+        List<SaleDetailDto> saleDetailDtoLst = new ArrayList<>();
+        for(SaleDetailModel saleDetail : saleModel.getDetails()){
+            SaleDetailDto saleDetailDto = new SaleDetailDto();
+
+            saleDetailDto.setId(saleDetail.getId());
+            saleDetailDto.setProduct(saleDetail.getProduct());
+            saleDetailDto.setCuantity(saleDetail.getCuantity());
+            saleDetailDto.setPrice(saleDetail.getPrice());
+            saleDetailDto.setSubtotal(saleDetail.getSubtotal());
+
+            saleDetailDtoLst.add(saleDetailDto);
+        }
+
+        saleCompleteDto.setDetails(saleDetailDtoLst);
+
+        return saleCompleteDto;
     }
 }
