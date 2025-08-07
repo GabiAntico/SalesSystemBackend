@@ -1,5 +1,6 @@
 package com.sales.api.services;
 
+import com.sales.api.dtos.ProductDto;
 import com.sales.api.entities.Product;
 import com.sales.api.models.ProductModel;
 import org.springframework.stereotype.Service;
@@ -13,4 +14,6 @@ public interface ProductService {
     Product getProductByIdToSales(Long productId);
 
     ProductModel getProductById(Long productId);
+
+    ProductModel postProduct(ProductDto productDto);
 }

@@ -1,5 +1,6 @@
 package com.sales.api.services.implementations;
 
+import com.sales.api.dtos.ProductDto;
 import com.sales.api.entities.Product;
 import com.sales.api.models.ProductModel;
 import com.sales.api.repositories.ProductRepository;
@@ -45,6 +46,13 @@ public class ProductServiceImpl implements ProductService {
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "The product was not found."));
 
         return mapEntityIntoModel(product);
+    }
+
+    @Override
+    public ProductModel postProduct(ProductDto productDto) {
+        Product product = new Product(null, productDto.getDescription(), productDto.getUnitaryPrice());
+
+        return mapEntityIntoModel(productRepository.save(product));
     }
 
     private ProductModel mapEntityIntoModel(Product product){

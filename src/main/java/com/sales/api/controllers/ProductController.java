@@ -1,5 +1,6 @@
 package com.sales.api.controllers;
 
+import com.sales.api.dtos.ProductDto;
 import com.sales.api.entities.Product;
 import com.sales.api.models.ProductModel;
 import com.sales.api.services.ProductService;
@@ -25,5 +26,10 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<ProductModel> getProductById(@PathVariable Long id){
         return ResponseEntity.ok(productService.getProductById(id));
+    }
+
+    @PostMapping()
+    public ResponseEntity<ProductModel> postProduct(@RequestBody ProductDto product){
+        return ResponseEntity.ok(productService.postProduct(product));
     }
 }
