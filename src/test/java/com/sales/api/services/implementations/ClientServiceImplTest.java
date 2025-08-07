@@ -6,9 +6,14 @@ import com.sales.api.models.ClientModel;
 import com.sales.api.repositories.ClientRepository;
 import com.sales.api.services.ClientService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -18,13 +23,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+
+@ExtendWith(MockitoExtension.class)
 class ClientServiceImplTest {
 
-    @Autowired
+    @InjectMocks
     private ClientServiceImpl clientService;
 
-    @MockitoBean
+    @Mock
     private ClientRepository clientRepository;
 
     @Test

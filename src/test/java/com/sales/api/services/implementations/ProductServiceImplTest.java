@@ -5,8 +5,13 @@ import com.sales.api.models.ProductModel;
 import com.sales.api.repositories.ProductRepository;
 import com.sales.api.repositories.SalesRepository;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.math.BigDecimal;
@@ -15,13 +20,14 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+
+@ExtendWith(MockitoExtension.class)
 class ProductServiceImplTest {
 
-    @Autowired
+    @InjectMocks
     private ProductServiceImpl productService;
 
-    @MockitoBean
+    @Mock
     private ProductRepository productRepository;
 
 
