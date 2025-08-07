@@ -21,7 +21,7 @@ public class WebConfig {
                         .allowedOrigins(allowedOrigin)
                         .allowedMethods("*")
                         .allowedHeaders("*")
-                        .allowCredentials(true);
+                        .allowCredentials(false);
             }
         };
     }
