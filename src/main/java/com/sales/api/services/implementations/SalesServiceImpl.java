@@ -230,7 +230,7 @@ public class SalesServiceImpl implements SalesService {
             SaleDetailModel saleDetailModel = new SaleDetailModel();
 
             saleDetailModel.setId(saleDetail.getId());
-            saleDetailModel.setCuantity(saleDetailModel.getCuantity());
+            saleDetailModel.setCuantity(saleDetail.getCuantity());
             saleDetailModel.setPrice(saleDetail.getPrice());
             saleDetailModel.setSubtotal(saleDetail.getSubtotal());
             saleDetailModel.setProduct(new ProductModel(saleDetail.getProduct().getId(), saleDetail.getProduct().getDescription(),
